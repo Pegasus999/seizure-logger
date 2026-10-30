@@ -55,7 +55,17 @@ function activateUser(userId: string): void {
   }
   setSetting('owner_user_id', userId);
   setCurrentUser(userId);
-  ensureDefaultSymptoms();
+}
+
+/** Pull first so a second device receives existing symptoms instead of seeding duplicates. */
+async function bootstrapSync(): Promise<void> {
+  try {
+    await syncNow();
+    ensureDefaultSymptoms();
+  } catch {
+    // ignore; auto sync retries later
+  }
+  void syncNow();
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
@@ -76,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }): React
         } catch {
           // keep going; UI still works from whatever is in the db
         }
-        void syncNow();
+        void bootstrapSync();
       } else {
         setCurrentUser(null);
       }
