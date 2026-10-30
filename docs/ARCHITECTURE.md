@@ -158,7 +158,7 @@ updateEvent(id: string, patch: Partial<Pick<SeizureEvent,
 setEventSymptoms(eventId: string, symptomIds: string[]): void    // soft-deletes removed, upserts added
 setEventContextTags(eventId: string, tags: ContextTag[]): void
 deleteEvent(id: string): void          // soft delete event + its join rows
-undoEvent(id: string): void            // never pushed → hard delete locally; else soft delete
+undoEvent(id: string): void            // always soft delete (a push may be in flight; a hard delete could be resurrected by pull)
 getEvent(id: string): EventWithDetails | null
 listEvents(opts?: { from?: Date; to?: Date; intensities?: Intensity[] }): EventWithDetails[] // occurred_at DESC, non-deleted
 listSymptoms(): Symptom[]              // non-deleted; defaults first (DEFAULT_SYMPTOMS order), then custom A–Z

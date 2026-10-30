@@ -429,18 +429,9 @@ export function deleteEvent(id: string): void {
 }
 
 export function undoEvent(id: string): void {
-  const d = getDb();
-  const r = d.getFirstSync<{ synced: number }>('SELECT synced FROM seizure_events WHERE id = ?', [id]);
-  if (!r) return;
-  if (r.synced === 0) {
-    d.withTransactionSync(() => {
-      d.runSync('DELETE FROM seizure_event_symptoms WHERE event_id = ?', [id]);
-      d.runSync('DELETE FROM event_context_tags WHERE event_id = ?', [id]);
-      d.runSync('DELETE FROM seizure_events WHERE id = ?', [id]);
-    });
-  } else {
-    softDeleteEvent(id);
-  }
+  // Always a soft delete: a push may already be in flight for this row, and a local
+  // hard delete would let the next pull resurrect it.
+  softDeleteEvent(id);
   notifyChange();
 }
 
