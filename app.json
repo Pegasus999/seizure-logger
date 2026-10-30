@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Seizure Log",
+    "slug": "seizure-logger",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.pegastudios.seizurelog"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#121417",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.pegastudios.seizurelog"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "seizurelog",
+    "backgroundColor": "#121417",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "backgroundColor": "#121417",
+      "resizeMode": "contain"
+    },
+    "plugins": [
+      "expo-sqlite",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Seizure Log to lock the app with Face ID."
+        }
+      ],
+      "expo-notifications"
+    ]
+  }
+}
