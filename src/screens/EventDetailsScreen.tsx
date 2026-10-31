@@ -120,10 +120,10 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
   };
 
   const confirmDelete = () =>
-    Alert.alert('Delete this entry?', 'This cannot be undone.', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert('Supprimer cette crise ?', 'Cette action est irréversible.', [
+      { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Delete',
+        text: 'Supprimer',
         style: 'destructive',
         onPress: () => {
           missing.current = true;
@@ -145,12 +145,12 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
           <IntensityBadge intensity={ev.intensity} size="lg" />
           <Text style={{ color: colors.text, fontSize: type.lg }}>{formatDateTime(when)}</Text>
         </View>
-        <Button label={isNew ? 'Skip' : 'Done'} variant="secondary" size="lg" onPress={done} />
+        <Button label={isNew ? 'Passer' : 'Terminé'} variant="secondary" size="lg" onPress={done} />
       </View>
 
       {isNew ? (
         <Card>
-          <Text style={{ color: colors.text, fontSize: type.md }}>Saved. Add details or skip.</Text>
+          <Text style={{ color: colors.text, fontSize: type.md }}>Enregistrée. Ajoutez des détails ou passez.</Text>
           {undoLeft > 0 ? (
             <Pressable
               accessibilityRole="button"
@@ -161,13 +161,13 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
                 navigation.goBack();
               }}
             >
-              <Text style={{ color: colors.accent, fontSize: type.md, fontWeight: '600' }}>Undo</Text>
+              <Text style={{ color: colors.accent, fontSize: type.md, fontWeight: '600' }}>Annuler</Text>
             </Pressable>
           ) : null}
         </Card>
       ) : null}
 
-      <SectionTitle>Time</SectionTitle>
+      <SectionTitle>Heure</SectionTitle>
       <Button label={formatDateTime(when)} variant="secondary" onPress={openTime} />
       {Platform.OS === 'ios' && showIosPicker ? (
         <DateTimePicker
@@ -181,7 +181,7 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
         />
       ) : null}
 
-      <SectionTitle>Intensity</SectionTitle>
+      <SectionTitle>Intensité</SectionTitle>
       <ChipGroup>
         {INTENSITIES.map((i) => (
           <Chip
@@ -194,28 +194,28 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
         ))}
       </ChipGroup>
 
-      <SectionTitle>Symptoms</SectionTitle>
+      <SectionTitle>Symptômes</SectionTitle>
       <ChipGroup>
         {symptoms.map((s) => (
           <Chip key={s.id} label={s.label} selected={selectedSymptoms.has(s.id)} onPress={() => toggleSymptom(s.id)} />
         ))}
-        {addingSymptom ? null : <Chip label="+ Add symptom" onPress={() => setAddingSymptom(true)} />}
+        {addingSymptom ? null : <Chip label="+ Ajouter un symptôme" onPress={() => setAddingSymptom(true)} />}
       </ChipGroup>
       {addingSymptom ? (
         <View style={{ flexDirection: 'row', gap: spacing.sm, alignItems: 'flex-end' }}>
           <TextField
             style={{ flex: 1 }}
-            placeholder="New symptom"
+            placeholder="Nouveau symptôme"
             value={newSymptom}
             onChangeText={setNewSymptom}
             onSubmitEditing={addSymptom}
             autoFocus
           />
-          <Button label="Add" onPress={addSymptom} />
+          <Button label="Ajouter" onPress={addSymptom} />
         </View>
       ) : null}
 
-      <SectionTitle>Duration</SectionTitle>
+      <SectionTitle>Durée</SectionTitle>
       <ChipGroup>
         {DURATION_PRESETS.map((p) => (
           <Chip
@@ -230,14 +230,14 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
         ))}
       </ChipGroup>
       <TextField
-        label="Exact seconds"
+        label="Secondes exactes"
         value={secondsText}
         onChangeText={(t) => setSeconds(t.replace(/\D/g, ''))}
         onBlur={commitSeconds}
         keyboardType="number-pad"
       />
 
-      <SectionTitle>After the seizure</SectionTitle>
+      <SectionTitle>Effet après la crise</SectionTitle>
       <ChipGroup>
         {(Object.keys(AFTER_EFFECTS) as AfterEffect[]).map((a) => (
           <Chip
@@ -249,7 +249,7 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
         ))}
       </ChipGroup>
 
-      <SectionTitle>Context</SectionTitle>
+      <SectionTitle>Contexte</SectionTitle>
       <ChipGroup>
         {(Object.keys(CONTEXT_TAGS) as ContextTag[]).map((t) => (
           <Chip key={t} label={CONTEXT_TAGS[t]} selected={ev.context_tags.includes(t)} onPress={() => toggleTag(t)} />
@@ -269,8 +269,8 @@ export default function EventDetailsScreen({ route, navigation }: RootScreenProp
 
       {!isNew ? (
         <>
-          <Muted>Changes are saved automatically.</Muted>
-          <Button label="Delete entry" variant="danger" onPress={confirmDelete} />
+          <Muted>Les modifications sont enregistrées automatiquement.</Muted>
+          <Button label="Supprimer la crise" variant="danger" onPress={confirmDelete} />
         </>
       ) : null}
     </Screen>

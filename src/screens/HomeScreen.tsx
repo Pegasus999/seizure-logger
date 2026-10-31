@@ -34,11 +34,11 @@ export default function HomeScreen({ navigation }: TabScreenProps<'Log'>): React
     if (intensity === 'high') details();
     setToast({
       key: ev.id,
-      message: `Logged ${INTENSITY_META[intensity].label} · ${formatTime(when)}`,
+      message: `Crise enregistrée : ${INTENSITY_META[intensity].label.toLowerCase()} · ${formatTime(when)}`,
       onUndo: () => {
         undoEvent(ev.id);
         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-        setToast({ key: `${ev.id}-removed`, message: 'Entry removed', durationMs: 2000 });
+        setToast({ key: `${ev.id}-removed`, message: 'Crise supprimée', durationMs: 2000 });
       },
       onDetails: details,
     });
@@ -48,7 +48,7 @@ export default function HomeScreen({ navigation }: TabScreenProps<'Log'>): React
     <SafeAreaView style={styles.root} edges={['top', 'left', 'right']}>
       <View style={styles.header}>
         <Text style={styles.name}>{child?.display_name ?? ''}</Text>
-        <Muted>{count} in the last 12 h</Muted>
+        <Muted>{count} {count > 1 ? 'crises' : 'crise'} au cours des 12 dernières heures</Muted>
       </View>
       <View style={styles.buttons}>
         {INTENSITIES.map((i) => {
@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }: TabScreenProps<'Log'>): React
             <Pressable
               key={i}
               accessibilityRole="button"
-              accessibilityLabel={`Log ${i} intensity seizure now`}
+              accessibilityLabel={`Enregistrer maintenant une crise ${m.label.toLowerCase()}`}
               onPressIn={() => {
                 pressedAt.current[i] = new Date();
               }}
@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation }: TabScreenProps<'Log'>): React
           );
         })}
       </View>
-      <Muted style={styles.hint}>Logged at the moment you tap. You can adjust the time later.</Muted>
+      <Muted style={styles.hint}>Enregistrée à l'instant où vous touchez. Vous pourrez ajuster l'heure ensuite.</Muted>
       <UndoToast toast={toast} onHide={hide} bottom={spacing.xl} />
     </SafeAreaView>
   );

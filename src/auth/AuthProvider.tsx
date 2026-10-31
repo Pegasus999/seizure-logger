@@ -22,8 +22,6 @@ export interface AuthState {
   localOnly: boolean;
   signInWithPassword(email: string, password: string): Promise<Result>;
   signUp(email: string, password: string): Promise<Result>;
-  sendCode(email: string): Promise<Result>;
-  verifyCode(email: string, code: string): Promise<Result>;
   signOut(): Promise<Result>;
   deleteAccount(): Promise<Result>;
 }
@@ -149,26 +147,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }): React
     [],
   );
 
-  const sendCode = useCallback(
-    (email: string) =>
-      guarded(async () => {
-        if (!supabase) return { error: 'Sync is not configured' };
-        const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-        return error ? { error: error.message } : {};
-      }),
-    [],
-  );
-
-  const verifyCode = useCallback(
-    (email: string, code: string) =>
-      guarded(async () => {
-        if (!supabase) return { error: 'Sync is not configured' };
-        const { error } = await supabase.auth.verifyOtp({ email, token: code, type: 'email' });
-        return error ? { error: error.message } : {};
-      }),
-    [],
-  );
-
   const endSession = useCallback(async (): Promise<Result> => {
     let error: string | undefined;
     if (supabase) {
@@ -214,12 +192,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }): React
       localOnly,
       signInWithPassword,
       signUp,
-      sendCode,
-      verifyCode,
       signOut,
       deleteAccount,
     }),
-    [session, userId, loading, localOnly, signInWithPassword, signUp, sendCode, verifyCode, signOut, deleteAccount],
+    [session, userId, loading, localOnly, signInWithPassword, signUp, signOut, deleteAccount],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

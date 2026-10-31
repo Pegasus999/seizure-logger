@@ -1,62 +1,62 @@
 import type { AfterEffect, ContextTag, Intensity, IntensityGuide } from './types';
 
 export const DEFAULT_SYMPTOMS: string[] = [
-  'Jerking',
-  'Teeth clenching',
-  'Stiffening',
-  'Woke up and staring',
-  'Unresponsive',
-  'Eyes rolling',
-  'Drooling',
-  'Vocalizing or crying out',
-  'Loss of bladder control',
-  'Breathing changes',
-  'Color change (pale or bluish)',
+  'Secousses',
+  'Mâchoires serrées',
+  'Raidissement',
+  'Réveil avec regard fixe',
+  'Absence de réaction',
+  'Yeux révulsés',
+  'Bave',
+  'Cris ou vocalisations',
+  'Perte d\'urine',
+  'Changements de respiration',
+  'Changement de couleur (pâle ou bleuâtre)',
 ];
 
 export const DURATION_PRESETS: { label: string; seconds: number }[] = [
-  { label: 'Under 30 sec', seconds: 20 },
-  { label: '30 sec – 1 min', seconds: 45 },
+  { label: 'Moins de 30 s', seconds: 20 },
+  { label: '30 s – 1 min', seconds: 45 },
   { label: '1 – 2 min', seconds: 90 },
   { label: '2 – 5 min', seconds: 210 },
-  { label: 'Over 5 min', seconds: 330 },
+  { label: 'Plus de 5 min', seconds: 330 },
 ];
 
 export const AFTER_EFFECTS: Record<AfterEffect, string> = {
-  woke_fully: 'Woke up fully',
-  stayed_asleep: 'Stayed asleep',
-  sleepy_confused: 'Sleepy or confused',
-  other: 'Other',
+  woke_fully: 'S\'est complètement réveillé',
+  stayed_asleep: 'Est resté endormi',
+  sleepy_confused: 'Somnolent ou confus',
+  other: 'Autre',
 };
 
 export const CONTEXT_TAGS: Record<ContextTag, string> = {
-  missed_medication: 'Missed medication',
-  illness_fever: 'Illness or fever',
-  poor_sleep: 'Poor sleep earlier',
-  other: 'Other',
+  missed_medication: 'Médicament oublié',
+  illness_fever: 'Maladie ou fièvre',
+  poor_sleep: 'Mauvais sommeil',
+  other: 'Autre',
 };
 
 export const DEFAULT_INTENSITY_GUIDE: IntensityGuide = {
-  low: 'Brief, mild movement or sounds, child stays asleep.',
-  medium: 'Noticeable movement or stiffening, may partially wake.',
-  high: 'Strong convulsive movement, stiffening, waking, staring, or unresponsiveness.',
+  low: 'Mouvements ou sons brefs et légers, l\'enfant reste endormi.',
+  medium: 'Mouvements ou raidissement notables, réveil parfois partiel.',
+  high: 'Convulsions fortes, raidissement, réveil, regard fixe ou absence de réaction.',
 };
 
 export const INTENSITY_META: Record<
   Intensity,
   { label: string; color: string; dimColor: string; glyph: string }
 > = {
-  low: { label: 'Low', color: '#4C8DD6', dimColor: '#22303F', glyph: '●' },
-  medium: { label: 'Medium', color: '#D9A441', dimColor: '#3A3222', glyph: '▲' },
-  high: { label: 'High', color: '#D0566B', dimColor: '#3A232A', glyph: '■' },
+  low: { label: 'Légère', color: '#4C8DD6', dimColor: '#22303F', glyph: '●' },
+  medium: { label: 'Modérée', color: '#D9A441', dimColor: '#3A3222', glyph: '▲' },
+  high: { label: 'Forte', color: '#D0566B', dimColor: '#3A232A', glyph: '■' },
 };
 
 export const UNDO_WINDOW_MS = 10_000;
 
 export const EMERGENCY_DISCLAIMER =
-  'This app is a personal logging tool. It does not provide medical advice or diagnosis. If a seizure lasts more than five minutes, or the child is hurt or not recovering, seek emergency care.';
+  'Cette application est un outil de suivi personnel. Elle ne fournit ni conseil médical ni diagnostic. Si une crise dure plus de cinq minutes, ou si l\'enfant est blessé ou ne récupère pas, appelez les secours.';
 
-export const REPORT_FOOTER = 'Caregiver-recorded log. Not a medical record.';
+export const REPORT_FOOTER = 'Journal tenu par un proche aidant. Il ne s\'agit pas d\'un dossier médical.';
 
 export const PRIVACY_NOTE =
-  "Seizure Log stores your child's display name or initials, an optional birth year and medication note, and the seizure entries and details you record. This information is kept on this phone and in your family's private Supabase database, which is protected so that only your account can read it. Nothing is shared with anyone unless you choose to export a report. You can delete everything at any time from Settings.";
+  "Journal des crises enregistre le prénom ou les initiales de votre enfant, une année de naissance et une note sur le traitement (facultatives), ainsi que les crises et les détails que vous saisissez. Ces informations sont conservées sur ce téléphone et dans la base de données Supabase privée de votre famille, protégée de sorte que seul votre compte puisse la lire. Rien n'est partagé avec qui que ce soit, sauf si vous choisissez d'exporter un rapport. Vous pouvez tout supprimer à tout moment depuis les Réglages.";

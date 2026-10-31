@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { buildReportHtml } from '../reportHtml';
+import { buildReportHtml, escapeHtml } from '../reportHtml';
 import { buildCsv } from '../csv';
 import { DEFAULT_INTENSITY_GUIDE, REPORT_FOOTER } from '../../constants';
 import { ev } from '../../lib/testUtils';
@@ -24,17 +24,17 @@ describe('reportHtml', () => {
     expect(html).toContain('&lt;b&gt;Al &amp; &quot;Bo&quot;&lt;/b&gt;');
     expect(html).not.toContain('<b>Al');
     expect(html).not.toContain('<script>x');
-    expect(html).toContain('Context: Poor sleep earlier');
+    expect(html).toContain('Contexte : Mauvais sommeil');
     expect(html).toContain('<svg');
-    expect(html).toContain(REPORT_FOOTER);
-    expect(html).toContain('<b>3</b>Total seizures');
+    expect(html).toContain(escapeHtml(REPORT_FOOTER));
+    expect(html).toContain('<b>3</b>Total des crises');
     expect(html).toContain('<b>2</b>▲'.replace('▲', '■'));
-    expect(html).toContain('<b>1</b>● Low');
-    expect(html).toContain('<b>0</b>▲ Medium');
+    expect(html).toContain('<b>1</b>● Légère');
+    expect(html).toContain('<b>0</b>▲ Modérée');
   });
   it('empty', () => {
     const h = buildReportHtml({ child, events: [], from, to, generatedAt: new Date(), guide: DEFAULT_INTENSITY_GUIDE });
-    expect(h).toContain('No seizures recorded');
+    expect(h).toContain('Aucune crise enregistrée');
   });
 });
 

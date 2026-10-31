@@ -1,7 +1,7 @@
 import type { RangePreset } from '../types';
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+const DAYS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
 export const MONTH_NAMES_SHORT = MONTHS;
 
@@ -97,7 +97,7 @@ export function formatDateTime(d: Date): string {
 
 export function formatDayHeading(d: Date, now: Date = new Date()): string {
   const k = dayKey(d);
-  if (k === dayKey(now)) return 'Today';
-  if (k === dayKey(addDays(now, -1))) return 'Yesterday';
+  if (k === dayKey(now)) return 'Aujourd\'hui';
+  if (k === dayKey(addDays(now, -1))) return 'Hier';
   return formatDate(d);
 }

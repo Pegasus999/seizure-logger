@@ -43,3 +43,8 @@ yarn-error.*
 # secrets
 .env
 .env.local
+
+# android signing / build outputs
+/android/keystore.properties
+/android/app/release.keystore
+*.apk

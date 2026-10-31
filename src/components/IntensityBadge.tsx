@@ -16,7 +16,7 @@ export function IntensityBadge({
   return (
     <View
       accessible
-      accessibilityLabel={`${m.label} intensity`}
+      accessibilityLabel={`Intensité ${m.label.toLowerCase()}`}
       style={[styles.pill, { backgroundColor: m.dimColor, borderColor: m.color }, lg && styles.pillLg]}
     >
       <Text style={{ color: m.color, fontSize: lg ? 20 : 13 }}>{m.glyph}</Text>

@@ -22,11 +22,11 @@ import { INTENSITIES, type EventWithDetails, type Intensity } from '../types';
 
 type Range = 'all' | '7d' | '30d' | '3m' | 'custom';
 const RANGES: { key: Range; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: '7d', label: '7 days' },
-  { key: '30d', label: '30 days' },
-  { key: '3m', label: '3 months' },
-  { key: 'custom', label: 'Custom' },
+  { key: 'all', label: 'Tout' },
+  { key: '7d', label: '7 derniers jours' },
+  { key: '30d', label: '30 derniers jours' },
+  { key: '3m', label: '3 derniers mois' },
+  { key: 'custom', label: 'Personnalisé' },
 ];
 
 interface Section {
@@ -114,8 +114,8 @@ export default function HistoryScreen({ navigation }: TabScreenProps<'History'>)
       </ChipGroup>
       {range === 'custom' ? (
         <View style={{ gap: spacing.md }}>
-          <DateField label="From" value={customFrom} onChange={(d) => d && setCustomFrom(d)} />
-          <DateField label="To" value={customTo} onChange={(d) => d && setCustomTo(d)} />
+          <DateField label="Du" value={customFrom} onChange={(d) => d && setCustomFrom(d)} />
+          <DateField label="Au" value={customTo} onChange={(d) => d && setCustomTo(d)} />
         </View>
       ) : null}
     </View>
@@ -133,8 +133,8 @@ export default function HistoryScreen({ navigation }: TabScreenProps<'History'>)
         ListEmptyComponent={
           <Muted style={{ fontSize: type.md, paddingVertical: spacing.lg }}>
             {selected.length > 0 || range !== 'all'
-              ? 'No entries match these filters.'
-              : 'No entries yet. Logged seizures will appear here.'}
+              ? 'Aucune crise ne correspond à ces filtres.'
+              : 'Aucune crise pour le moment. Les crises enregistrées apparaîtront ici.'}
           </Muted>
         }
         renderSectionHeader={({ section }) => (
@@ -150,7 +150,7 @@ export default function HistoryScreen({ navigation }: TabScreenProps<'History'>)
           return (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={`${INTENSITY_META[item.intensity].label} at ${formatTime(when)}`}
+              accessibilityLabel={`${INTENSITY_META[item.intensity].label} à ${formatTime(when)}`}
               onPress={() => navigation.navigate('EventDetails', { eventId: item.id })}
               style={({ pressed }) => ({
                 minHeight: 64,

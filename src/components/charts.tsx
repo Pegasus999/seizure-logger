@@ -9,7 +9,7 @@ import { INTENSITIES, type WeekBucket } from '../types';
 import { IntensityBadge } from './IntensityBadge';
 import { Muted } from './ui';
 
-const EMPTY = 'No entries in this period.';
+const EMPTY = 'Aucune crise sur cette période.';
 const PAD_L = 28;
 const PAD_R = 8;
 const PAD_T = 8;

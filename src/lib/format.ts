@@ -6,10 +6,10 @@ export function formatDuration(seconds: number | null): string {
   const preset = DURATION_PRESETS.find((p) => p.seconds === seconds);
   if (preset) return preset.label;
   const s = Math.max(0, Math.round(seconds));
-  if (s < 60) return `${s} sec`;
+  if (s < 60) return `${s} s`;
   const m = Math.floor(s / 60);
   const r = s % 60;
-  return r === 0 ? `${m} min` : `${m} min ${r} sec`;
+  return r === 0 ? `${m} min` : `${m} min ${r} s`;
 }
 
 export function afterEffectLabel(a: AfterEffect | null): string {
@@ -23,4 +23,9 @@ export function contextTagLabel(t: ContextTag): string {
 export function symptomSummary(labels: string[], max = 3): string {
   if (labels.length <= max) return labels.join(', ');
   return `${labels.slice(0, max).join(', ')} +${labels.length - max}`;
+}
+
+/** Decimal number with a French decimal comma (2,5). */
+export function formatDecimal(n: number): string {
+  return String(n).replace('.', ',');
 }

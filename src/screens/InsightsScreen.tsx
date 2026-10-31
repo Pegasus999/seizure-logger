@@ -7,15 +7,16 @@ import { Card, Chip, ChipGroup, Muted, Screen, SectionTitle } from '../component
 import { listEvents } from '../db/repo';
 import { useDbChange } from '../db/useDbChange';
 import { addDays, endOfDay, MONTH_NAMES_SHORT, startOfDay } from '../lib/dates';
+import { formatDecimal } from '../lib/format';
 import { computeStats } from '../lib/stats';
 import { colors, spacing, type } from '../theme';
 import { INTENSITIES } from '../types';
 
 type Range = '4w' | '3m' | '12m';
 const RANGES: { key: Range; label: string }[] = [
-  { key: '4w', label: 'Last 4 weeks' },
-  { key: '3m', label: '3 months' },
-  { key: '12m', label: '12 months' },
+  { key: '4w', label: '4 dernières semaines' },
+  { key: '3m', label: '3 derniers mois' },
+  { key: '12m', label: '12 derniers mois' },
 ];
 
 function monthLabel(m: string): string {
@@ -75,25 +76,25 @@ export default function InsightsScreen(): React.JSX.Element {
             <IntensityBadge intensity={i} size="sm" />
           </Tile>
         ))}
-        <Tile label="Avg / week" value={String(stats.avgPerWeek)} />
+        <Tile label="Moyenne par semaine" value={formatDecimal(stats.avgPerWeek)} />
       </View>
 
       <Card>
-        <SectionTitle>Per week</SectionTitle>
+        <SectionTitle>Crises par semaine</SectionTitle>
         <WeeklyStackedBars weekly={stats.weekly} />
       </Card>
 
       <Card>
-        <SectionTitle>Per month</SectionTitle>
+        <SectionTitle>Crises par mois</SectionTitle>
         {stats.total === 0 ? (
-          <Muted>No entries in this period.</Muted>
+          <Muted>Aucune crise sur cette période.</Muted>
         ) : (
           <View style={{ gap: spacing.sm }}>
             <View style={{ flexDirection: 'row' }}>
-              <Muted style={{ flex: 2 }}>Month</Muted>
+              <Muted style={{ flex: 2 }}>Mois</Muted>
               {INTENSITIES.map((i) => (
                 <Muted key={i} style={{ flex: 1, textAlign: 'right' }}>
-                  {i === 'low' ? 'Low' : i === 'medium' ? 'Med' : 'High'}
+                  {i === 'low' ? 'Lég.' : i === 'medium' ? 'Mod.' : 'Forte'}
                 </Muted>
               ))}
               <Muted style={{ flex: 1, textAlign: 'right' }}>Total</Muted>
@@ -112,14 +113,14 @@ export default function InsightsScreen(): React.JSX.Element {
       </Card>
 
       <Card>
-        <SectionTitle>Time of night</SectionTitle>
+        <SectionTitle>Heure de la nuit</SectionTitle>
         <HourBars byHour={stats.byHour} />
       </Card>
 
       <Card>
-        <SectionTitle>Most common symptoms</SectionTitle>
+        <SectionTitle>Symptômes les plus fréquents</SectionTitle>
         {stats.topSymptoms.length === 0 ? (
-          <Muted>No symptoms recorded in this period.</Muted>
+          <Muted>Aucun symptôme noté sur cette période.</Muted>
         ) : (
           stats.topSymptoms.slice(0, 5).map((s) => (
             <View key={s.label} style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }}>

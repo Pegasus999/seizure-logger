@@ -31,9 +31,9 @@ describe('dates', () => {
     expect(dayKey(startOfWeek(new Date(2026, 9, 26, 0, 5)))).toBe('2026-10-26'); // Monday
   });
   it('formatting', () => {
-    expect(formatDate(new Date(2026, 9, 30))).toBe('Fri 30 Oct 2026');
+    expect(formatDate(new Date(2026, 9, 30))).toBe('vendredi 30 oct. 2026');
     expect(formatTime(new Date(2026, 9, 5, 2, 3))).toBe('02:03');
-    expect(formatDayHeading(now, now)).toBe('Today');
-    expect(formatDayHeading(new Date(2026, 9, 29), now)).toBe('Yesterday');
+    expect(formatDayHeading(now, now)).toBe("Aujourd'hui");
+    expect(formatDayHeading(new Date(2026, 9, 29), now)).toBe('Hier');
   });
 });

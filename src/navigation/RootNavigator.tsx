@@ -55,11 +55,11 @@ function MainTabs(): React.JSX.Element {
         tabBarIcon: ({ color, size }) => <Ionicons name={ICONS[route.name]} size={size} color={color} />,
       })}
     >
-      <Tabs.Screen name="Log" component={HomeScreen} options={{ headerShown: false }} />
-      <Tabs.Screen name="History" component={HistoryScreen} />
-      <Tabs.Screen name="Insights" component={InsightsScreen} />
-      <Tabs.Screen name="Report" component={ReportScreen} />
-      <Tabs.Screen name="Settings" component={SettingsScreen} />
+      <Tabs.Screen name="Log" component={HomeScreen} options={{ headerShown: false, title: 'Accueil' }} />
+      <Tabs.Screen name="History" component={HistoryScreen} options={{ title: 'Historique' }} />
+      <Tabs.Screen name="Insights" component={InsightsScreen} options={{ title: 'Analyses' }} />
+      <Tabs.Screen name="Report" component={ReportScreen} options={{ title: 'Rapport' }} />
+      <Tabs.Screen name="Settings" component={SettingsScreen} options={{ title: 'Réglages' }} />
     </Tabs.Navigator>
   );
 }
@@ -84,12 +84,12 @@ export default function RootNavigator(): React.JSX.Element {
       <Stack.Screen
         name="EventDetails"
         component={EventDetailsScreen}
-        options={{ presentation: 'modal', headerShown: false, title: 'Entry' }}
+        options={{ presentation: 'modal', headerShown: false, title: 'Détails de la crise' }}
       />
-      <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} options={{ title: 'Profile' }} />
-      <Stack.Screen name="IntensityGuide" component={IntensityGuideScreen} options={{ title: 'Intensity guide' }} />
-      <Stack.Screen name="Symptoms" component={SymptomsScreen} options={{ title: 'Symptoms' }} />
-      <Stack.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
+      <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} options={{ title: 'Profil' }} />
+      <Stack.Screen name="IntensityGuide" component={IntensityGuideScreen} options={{ title: 'Guide des intensités' }} />
+      <Stack.Screen name="Symptoms" component={SymptomsScreen} options={{ title: 'Symptômes' }} />
+      <Stack.Screen name="About" component={AboutScreen} options={{ title: 'À propos' }} />
     </Stack.Navigator>
   );
 }

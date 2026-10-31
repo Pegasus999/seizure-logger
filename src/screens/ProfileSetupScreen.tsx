@@ -12,9 +12,9 @@ import { INTENSITIES } from '../types';
 export default function ProfileSetupScreen(): React.JSX.Element {
   return (
     <Screen scroll edges={['top', 'left', 'right', 'bottom']}>
-      <Text style={{ color: colors.text, fontSize: type.xl, fontWeight: '700' }}>Set up</Text>
+      <Text style={{ color: colors.text, fontSize: type.xl, fontWeight: '700' }}>Configuration du profil</Text>
       <ProfileForm
-        submitLabel="Save and start"
+        submitLabel="Enregistrer et commencer"
         onSubmit={(v) =>
           saveChild({
             display_name: v.display_name,
@@ -23,7 +23,7 @@ export default function ProfileSetupScreen(): React.JSX.Element {
           })
         }
       />
-      <SectionTitle>Intensity guide</SectionTitle>
+      <SectionTitle>Guide des intensités</SectionTitle>
       <Card>
         {INTENSITIES.map((i) => (
           <View key={i} style={{ gap: spacing.xs }}>
@@ -31,7 +31,7 @@ export default function ProfileSetupScreen(): React.JSX.Element {
             <Text style={{ color: colors.text, fontSize: type.md }}>{DEFAULT_INTENSITY_GUIDE[i]}</Text>
           </View>
         ))}
-        <Muted>These are suggested definitions. Review them with the doctor — you can edit them in Settings.</Muted>
+        <Muted>Ce sont des définitions suggérées. Relisez-les avec le médecin : vous pourrez les modifier dans les Réglages.</Muted>
       </Card>
     </Screen>
   );

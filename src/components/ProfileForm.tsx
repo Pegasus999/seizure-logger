@@ -14,7 +14,7 @@ export interface ProfileValues {
 /** Reusable profile form (no last-visit date; ProfileEdit may add it around this). */
 export function ProfileForm({
   initial,
-  submitLabel = 'Save',
+  submitLabel = 'Enregistrer',
   onSubmit,
 }: {
   initial?: Pick<Child, 'display_name' | 'birth_year' | 'medications_note'> | null;
@@ -29,7 +29,7 @@ export function ProfileForm({
   const submit = () => {
     const n = name.trim();
     if (!n) {
-      setError('Please enter a name or initials.');
+      setError('Veuillez saisir un prénom ou des initiales.');
       return;
     }
     let birth: number | null = null;
@@ -37,7 +37,7 @@ export function ProfileForm({
       const y = Number(year.trim());
       const max = new Date().getFullYear();
       if (!Number.isInteger(y) || y < 1990 || y > max) {
-        setError(`Birth year must be between 1990 and ${max}.`);
+        setError(`L'année de naissance doit être comprise entre 1990 et ${max}.`);
         return;
       }
       birth = y;
@@ -49,21 +49,21 @@ export function ProfileForm({
   return (
     <View style={{ gap: spacing.md }}>
       <TextField
-        label="Display name"
-        hint="First name or initials is enough"
+        label="Prénom de l'enfant"
+        hint="Un prénom ou des initiales suffisent"
         value={name}
         onChangeText={setName}
         autoCapitalize="words"
       />
       <TextField
-        label="Birth year (optional)"
+        label="Année de naissance (facultatif)"
         value={year}
         onChangeText={(t) => setYear(t.replace(/\D/g, '').slice(0, 4))}
         keyboardType="number-pad"
         maxLength={4}
       />
       <TextField
-        label="Medications note (optional)"
+        label="Traitement en cours (facultatif)"
         value={meds}
         onChangeText={setMeds}
         multiline

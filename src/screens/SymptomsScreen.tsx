@@ -23,13 +23,13 @@ export default function SymptomsScreen(): React.JSX.Element {
       <View style={{ flexDirection: 'row', gap: spacing.sm, alignItems: 'flex-end' }}>
         <TextField
           style={{ flex: 1 }}
-          label="New symptom"
+          label="Nouveau symptôme"
           value={label}
           onChangeText={setLabel}
           onSubmitEditing={add}
           returnKeyType="done"
         />
-        <Button label="Add" onPress={add} />
+        <Button label="Ajouter" onPress={add} />
       </View>
       <Card>
         {symptoms.map((s) => (
@@ -39,16 +39,16 @@ export default function SymptomsScreen(): React.JSX.Element {
           >
             <Text style={{ flex: 1, color: colors.text, fontSize: type.md }}>{s.label}</Text>
             {s.is_default ? (
-              <Muted>Built-in</Muted>
+              <Muted>Par défaut</Muted>
             ) : (
               <Button
-                label="Delete"
+                label="Supprimer"
                 variant="ghost"
-                accessibilityLabel={`Delete ${s.label}`}
+                accessibilityLabel={`Supprimer ${s.label}`}
                 onPress={() =>
-                  Alert.alert(`Delete "${s.label}"?`, 'It stays on past entries that already use it.', [
-                    { text: 'Cancel', style: 'cancel' },
-                    { text: 'Delete', style: 'destructive', onPress: () => deleteSymptom(s.id) },
+                  Alert.alert(`Supprimer « ${s.label} » ?`, 'Il reste affiché sur les crises passées qui l\'utilisent.', [
+                    { text: 'Annuler', style: 'cancel' },
+                    { text: 'Supprimer', style: 'destructive', onPress: () => deleteSymptom(s.id) },
                   ])
                 }
               />
@@ -56,7 +56,7 @@ export default function SymptomsScreen(): React.JSX.Element {
           </View>
         ))}
       </Card>
-      <Muted>Deleting a symptom keeps it on past entries.</Muted>
+      <Muted>Supprimer un symptôme le conserve sur les crises passées.</Muted>
     </Screen>
   );
 }

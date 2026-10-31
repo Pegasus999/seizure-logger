@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Seizure Log",
+    "name": "Journal des crises",
     "slug": "seizure-logger",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -35,7 +35,7 @@
       [
         "expo-local-authentication",
         {
-          "faceIDPermission": "Allow Seizure Log to lock the app with Face ID."
+          "faceIDPermission": "Autoriser Journal des crises à verrouiller l'application avec Face ID."
         }
       ],
       "expo-notifications"

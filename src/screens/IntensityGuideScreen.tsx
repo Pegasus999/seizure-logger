@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { IntensityBadge } from '../components/IntensityBadge';
 import { Button, Muted, Screen, TextField } from '../components/ui';
-import { DEFAULT_INTENSITY_GUIDE } from '../constants';
+import { DEFAULT_INTENSITY_GUIDE, INTENSITY_META } from '../constants';
 import { getActiveChild, saveChild } from '../db/repo';
 import type { RootScreenProps } from '../navigation/types';
 import { spacing } from '../theme';
@@ -25,14 +25,13 @@ export default function IntensityGuideScreen({ navigation }: RootScreenProps<'In
   return (
     <Screen scroll>
       <Muted>
-        Write these in your own words and review them with the doctor, so entries stay consistent. The app does not
-        decide severity.
+        Rédigez-les avec vos propres mots et relisez-les avec le médecin, pour que les crises soient notées de façon cohérente. L'application ne détermine pas la gravité.
       </Muted>
       {INTENSITIES.map((i) => (
         <View key={i} style={{ gap: spacing.sm }}>
           <IntensityBadge intensity={i} size="lg" />
           <TextField
-            accessibilityLabel={`${i} intensity definition`}
+            accessibilityLabel={`Définition de l'intensité ${INTENSITY_META[i].label.toLowerCase()}`}
             multiline
             value={guide[i]}
             onChangeText={(t) => setGuide((g) => ({ ...g, [i]: t }))}
@@ -40,7 +39,7 @@ export default function IntensityGuideScreen({ navigation }: RootScreenProps<'In
         </View>
       ))}
       <Button
-        label="Save"
+        label="Enregistrer"
         size="lg"
         onPress={() =>
           save({
@@ -50,7 +49,7 @@ export default function IntensityGuideScreen({ navigation }: RootScreenProps<'In
           })
         }
       />
-      <Button label="Reset to suggested" variant="secondary" onPress={() => save(null)} />
+      <Button label="Rétablir les définitions suggérées" variant="secondary" onPress={() => save(null)} />
     </Screen>
   );
 }

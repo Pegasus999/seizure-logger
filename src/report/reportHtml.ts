@@ -1,6 +1,6 @@
 import { EMERGENCY_DISCLAIMER, INTENSITY_META, REPORT_FOOTER } from '../constants';
 import { MONTH_NAMES_SHORT, formatDate, formatDateTime, formatTime, parseLocalDate } from '../lib/dates';
-import { afterEffectLabel, contextTagLabel, formatDuration } from '../lib/format';
+import { afterEffectLabel, contextTagLabel, formatDecimal, formatDuration } from '../lib/format';
 import { computeStats, filterEvents } from '../lib/stats';
 import { INTENSITIES } from '../types';
 import type { Child, EventWithDetails, IntensityGuide, WeekBucket } from '../types';
@@ -34,7 +34,7 @@ export function buildWeeklyChartSvg(weekly: WeekBucket[], width: number, height:
 
   const parts: string[] = [];
   parts.push(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" role="img" aria-label="Seizures per week by intensity" font-family="sans-serif" font-size="9">`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" role="img" aria-label="Crises par semaine selon l'intensité" font-family="sans-serif" font-size="9">`,
   );
   for (let v = 0; v <= yMax; v += step) {
     const yy = y(v).toFixed(1);
@@ -116,25 +116,25 @@ export function buildReportHtml(input: {
   const stats = computeStats(events, from, to);
   const e = escapeHtml;
 
-  const header = `<h1>Seizure log — ${e(child.display_name)}</h1>
+  const header = `<h1>Journal des crises — ${e(child.display_name)}</h1>
 <div class="meta">${e(formatDate(from))} – ${e(formatDate(to))}</div>
-<div class="meta">Generated ${e(formatDateTime(generatedAt))}</div>
-${child.birth_year !== null && child.birth_year !== undefined ? `<div class="meta">Birth year: ${child.birth_year}</div>` : ''}
-${child.medications_note ? `<div class="meta">Medication note: ${e(child.medications_note)}</div>` : ''}`;
+<div class="meta">Généré le ${e(formatDateTime(generatedAt))}</div>
+${child.birth_year !== null && child.birth_year !== undefined ? `<div class="meta">Année de naissance : ${child.birth_year}</div>` : ''}
+${child.medications_note ? `<div class="meta">Traitement en cours : ${e(child.medications_note)}</div>` : ''}`;
 
-  const summary = `<h2>Summary</h2><div class="summary">
-<div class="card"><b>${stats.total}</b>Total seizures</div>
+  const summary = `<h2>Résumé</h2><div class="summary">
+<div class="card"><b>${stats.total}</b>Total des crises</div>
 ${INTENSITIES.map(
   (k) =>
     `<div class="card"><b>${stats.byIntensity[k]}</b>${INTENSITY_META[k].glyph} ${INTENSITY_META[k].label}</div>`,
 ).join('\n')}
-<div class="card"><b>${stats.avgPerWeek}</b>Average per week</div>
-<div class="card"><b>${e(formatDuration(stats.longestDurationSeconds))}</b>Longest recorded duration</div>
+<div class="card"><b>${formatDecimal(stats.avgPerWeek)}</b>Moyenne par semaine</div>
+<div class="card"><b>${e(formatDuration(stats.longestDurationSeconds))}</b>Durée la plus longue</div>
 </div>`;
 
-  const chart = `<h2>Seizures per week</h2>${
+  const chart = `<h2>Crises par semaine</h2>${
     stats.total === 0
-      ? '<p>No seizures recorded in this period.</p>'
+      ? '<p>Aucune crise enregistrée sur cette période.</p>'
       : buildWeeklyChartSvg(stats.weekly, 700, 220) + legendHtml()
   }`;
 
@@ -144,33 +144,33 @@ ${INTENSITIES.map(
       const m = INTENSITY_META[ev.intensity];
       const notes = [
         ev.notes ?? '',
-        ev.context_tags.length ? `Context: ${ev.context_tags.map(contextTagLabel).join(', ')}` : '',
+        ev.context_tags.length ? `Contexte : ${ev.context_tags.map(contextTagLabel).join(', ')}` : '',
       ]
         .filter(Boolean)
         .join(' ');
       return `<tr><td>${e(formatDate(d))}</td><td>${e(formatTime(d))}</td><td>${m.glyph} ${m.label}</td><td>${e(formatDuration(ev.duration_seconds))}</td><td>${e(ev.symptoms.map((s) => s.label).join(', '))}</td><td>${e(afterEffectLabel(ev.after_effect))}</td><td>${e(notes)}</td></tr>`;
     })
     .join('\n');
-  const log = `<h2>Detailed log</h2>${
+  const log = `<h2>Journal détaillé</h2>${
     events.length === 0
-      ? '<p>No seizures recorded in this period.</p>'
-      : `<table><thead><tr><th>Date</th><th>Time</th><th>Intensity</th><th>Duration</th><th>Symptoms</th><th>After</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>`
+      ? '<p>Aucune crise enregistrée sur cette période.</p>'
+      : `<table><thead><tr><th>Date</th><th>Heure</th><th>Intensité</th><th>Durée</th><th>Symptômes</th><th>Après</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>`
   }`;
 
   const top = stats.topSymptoms.slice(0, 10);
-  const symptoms = `<h2>Most common symptoms</h2>${
+  const symptoms = `<h2>Symptômes les plus fréquents</h2>${
     top.length === 0
-      ? '<p>No symptoms recorded.</p>'
+      ? '<p>Aucun symptôme noté.</p>'
       : `<ol>${top.map((s) => `<li>${e(s.label)} — ${s.count}</li>`).join('')}</ol>`
   }`;
 
-  const guideHtml = `<h2>Intensity definitions used</h2><div class="small">${INTENSITIES.map(
-    (k) => `<div>${INTENSITY_META[k].glyph} <b>${INTENSITY_META[k].label}:</b> ${e(guide[k] ?? '')}</div>`,
+  const guideHtml = `<h2>Définitions d'intensité utilisées</h2><div class="small">${INTENSITIES.map(
+    (k) => `<div>${INTENSITY_META[k].glyph} <b>${INTENSITY_META[k].label} :</b> ${e(guide[k] ?? '')}</div>`,
   ).join('')}</div>`;
 
   const footer = `<div class="footer"><div>${e(REPORT_FOOTER)}</div><div>${e(EMERGENCY_DISCLAIMER)}</div></div>`;
 
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Seizure log — ${e(child.display_name)}</title><style>${CSS}</style></head><body>
+  return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Journal des crises — ${e(child.display_name)}</title><style>${CSS}</style></head><body>
 ${header}
 ${summary}
 ${chart}

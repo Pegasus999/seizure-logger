@@ -42,14 +42,14 @@ export function DateField({
       <View style={{ flexDirection: 'row', gap: spacing.sm, alignItems: 'center' }}>
         <Button
           style={{ flex: 1 }}
-          label={value ? formatDate(value) : 'Not set'}
+          label={value ? formatDate(value) : 'Non renseignée'}
           variant="secondary"
-          accessibilityLabel={`${label}: ${value ? formatDate(value) : 'not set'}. Change`}
+          accessibilityLabel={`${label} : ${value ? formatDate(value) : 'non renseignée'}. Modifier`}
           onPress={open}
         />
         {allowClear && value ? (
           <Button
-            label="Clear"
+            label="Effacer"
             variant="ghost"
             onPress={() => {
               setShowIos(false);

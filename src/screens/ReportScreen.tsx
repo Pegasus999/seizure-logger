@@ -9,7 +9,7 @@ import { DEFAULT_INTENSITY_GUIDE } from '../constants';
 import { getActiveChild, listEvents, saveChild } from '../db/repo';
 import { useDbChange } from '../db/useDbChange';
 import { addDays, dayKey, formatDate, rangeForPreset } from '../lib/dates';
-import { formatDuration } from '../lib/format';
+import { formatDecimal, formatDuration } from '../lib/format';
 import { computeStats } from '../lib/stats';
 import { buildCsv } from '../report/csv';
 import { exportCsv, exportPdf, reportFileName } from '../report/export';
@@ -18,10 +18,10 @@ import { colors, spacing, type } from '../theme';
 import { INTENSITIES, type RangePreset } from '../types';
 
 const PRESETS: { key: RangePreset; label: string }[] = [
-  { key: '30d', label: 'Last 30 days' },
-  { key: '3m', label: 'Last 3 months' },
-  { key: 'since_visit', label: 'Since last visit' },
-  { key: 'custom', label: 'Custom' },
+  { key: '30d', label: '30 derniers jours' },
+  { key: '3m', label: '3 derniers mois' },
+  { key: 'since_visit', label: 'Depuis la dernière consultation' },
+  { key: 'custom', label: 'Personnalisé' },
 ];
 
 type Busy = 'pdf' | 'print' | 'csv' | null;
@@ -50,7 +50,7 @@ export default function ReportScreen(): React.JSX.Element {
   if (!child) {
     return (
       <Screen scroll edges={['top', 'left', 'right']}>
-        <Muted>Set up a profile first.</Muted>
+        <Muted>Configurez d'abord un profil.</Muted>
       </Screen>
     );
   }
@@ -61,7 +61,7 @@ export default function ReportScreen(): React.JSX.Element {
     try {
       await fn();
     } catch (e) {
-      Alert.alert('Could not export', e instanceof Error ? e.message : String(e));
+      Alert.alert('Export impossible', e instanceof Error ? e.message : String(e));
     } finally {
       setBusy(null);
     }
@@ -79,7 +79,7 @@ export default function ReportScreen(): React.JSX.Element {
 
   return (
     <Screen scroll edges={['top', 'left', 'right']}>
-      <SectionTitle>Period</SectionTitle>
+      <SectionTitle>Période</SectionTitle>
       <ChipGroup>
         {PRESETS.map((p) => (
           <Chip key={p.key} label={p.label} selected={preset === p.key} onPress={() => setPreset(p.key)} />
@@ -89,29 +89,29 @@ export default function ReportScreen(): React.JSX.Element {
       {preset === 'since_visit' && !lastVisit ? (
         <View style={{ gap: spacing.sm }}>
           <DateField
-            label="Last visit date"
+            label="Date de la dernière consultation"
             value={null}
             onChange={(d) => {
               if (d) saveChild({ ...child, last_visit_date: dayKey(d) });
             }}
           />
-          <Muted>Not set yet. Showing the last 30 days until you pick a date.</Muted>
+          <Muted>Pas encore renseignée. Les 30 derniers jours sont affichés tant que vous n'avez pas choisi de date.</Muted>
         </View>
       ) : null}
       {preset === 'custom' ? (
         <View style={{ gap: spacing.md }}>
-          <DateField label="From" value={customFrom} onChange={(d) => d && setCustomFrom(d)} />
-          <DateField label="To" value={customTo} onChange={(d) => d && setCustomTo(d)} />
+          <DateField label="Du" value={customFrom} onChange={(d) => d && setCustomFrom(d)} />
+          <DateField label="Au" value={customTo} onChange={(d) => d && setCustomTo(d)} />
         </View>
       ) : null}
 
       <Card>
-        <SectionTitle>What the PDF will contain</SectionTitle>
+        <SectionTitle>Contenu du PDF</SectionTitle>
         <Text style={{ color: colors.text, fontSize: type.md }}>
           {formatDate(from)} – {formatDate(to)}
         </Text>
         <Text style={{ color: colors.text, fontSize: type.lg, fontWeight: '700' }}>
-          {stats.total} {stats.total === 1 ? 'entry' : 'entries'}
+          {stats.total} {stats.total > 1 ? 'crises' : 'crise'}
         </Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, alignItems: 'center' }}>
           {INTENSITIES.map((i) => (
@@ -123,32 +123,32 @@ export default function ReportScreen(): React.JSX.Element {
             </View>
           ))}
         </View>
-        <Muted>Average per week: {stats.avgPerWeek}</Muted>
+        <Muted>Moyenne par semaine : {formatDecimal(stats.avgPerWeek)}</Muted>
         <Muted>
-          Longest duration:{' '}
+          Durée la plus longue :{' '}
           {stats.longestDurationSeconds === null ? '—' : formatDuration(stats.longestDurationSeconds)}
         </Muted>
       </Card>
 
       <Button
-        label="Generate PDF"
+        label="Générer le PDF"
         size="lg"
         busy={busy === 'pdf'}
-        busyLabel="Creating PDF…"
+        busyLabel="Création du PDF…"
         disabled={!!busy}
         onPress={() =>
           run('pdf', () => exportPdf(html(), reportFileName(child.display_name, from, to, 'pdf')))
         }
       />
       <Button
-        label="Preview / print"
+        label="Aperçu / imprimer"
         variant="secondary"
         busy={busy === 'print'}
         disabled={!!busy}
         onPress={() => run('print', () => Print.printAsync({ html: html() }))}
       />
       <Button
-        label="Export CSV"
+        label="Exporter en CSV"
         variant="ghost"
         busy={busy === 'csv'}
         disabled={!!busy}
@@ -156,7 +156,7 @@ export default function ReportScreen(): React.JSX.Element {
           run('csv', () => exportCsv(buildCsv(events), reportFileName(child.display_name, from, to, 'csv')))
         }
       />
-      <Muted>The PDF is created on this phone. Nothing is uploaded.</Muted>
+      <Muted>Le PDF est créé sur ce téléphone. Rien n'est envoyé.</Muted>
     </Screen>
   );
 }

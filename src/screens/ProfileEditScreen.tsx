@@ -19,7 +19,7 @@ export default function ProfileEditScreen({ navigation }: RootScreenProps<'Profi
     <Screen scroll>
       <View style={{ gap: spacing.lg }}>
         <Card>
-          <DateField label="Last doctor visit" value={visit} onChange={setVisit} allowClear />
+          <DateField label="Date de la dernière consultation" value={visit} onChange={setVisit} allowClear />
         </Card>
         <ProfileForm
           initial={child}

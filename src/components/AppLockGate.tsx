@@ -30,7 +30,7 @@ export function AppLockGate({ children }: { children: React.ReactNode }): React.
         setLocked(false);
         return;
       }
-      const r = await LocalAuthentication.authenticateAsync({ promptMessage: 'Unlock Seizure Log' });
+      const r = await LocalAuthentication.authenticateAsync({ promptMessage: 'Déverrouiller Journal des crises' });
       if (r.success) setLocked(false);
     } catch {
       // stay locked; user can retry
@@ -67,8 +67,8 @@ export function AppLockGate({ children }: { children: React.ReactNode }): React.
       {children}
       {locked && enabled ? (
         <View style={styles.lock} accessibilityViewIsModal>
-          <Text style={styles.title}>Seizure Log</Text>
-          <Button label="Unlock" size="lg" busy={busy} busyLabel="Unlocking…" onPress={() => void unlock()} />
+          <Text style={styles.title}>Journal des crises</Text>
+          <Button label="Déverrouiller" size="lg" busy={busy} busyLabel="Déverrouillage…" onPress={() => void unlock()} />
         </View>
       ) : null}
     </View>

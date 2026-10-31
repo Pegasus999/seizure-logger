@@ -57,7 +57,7 @@ export function UndoToast({
           {toast.onUndo ? (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Undo"
+              accessibilityLabel="Annuler"
               hitSlop={8}
               style={styles.action}
               onPress={() => {
@@ -65,13 +65,13 @@ export function UndoToast({
                 toast.onUndo?.();
               }}
             >
-              <Text style={styles.actionText}>Undo</Text>
+              <Text style={styles.actionText}>Annuler</Text>
             </Pressable>
           ) : null}
           {toast.onDetails ? (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Add details"
+              accessibilityLabel="Ajouter des détails"
               hitSlop={8}
               style={styles.action}
               onPress={() => {
@@ -79,7 +79,7 @@ export function UndoToast({
                 toast.onDetails?.();
               }}
             >
-              <Text style={styles.actionText}>Add details</Text>
+              <Text style={styles.actionText}>Ajouter des détails</Text>
             </Pressable>
           ) : null}
         </View>
